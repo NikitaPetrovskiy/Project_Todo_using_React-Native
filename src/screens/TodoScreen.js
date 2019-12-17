@@ -4,19 +4,26 @@ import { THEME } from '../theme';
 import { AppCard } from '../components/ui/AppCard';
 import { EditModal } from '../components/EditModal';
 
-export const TodoScreen = ({ onRemove, goBack, todo }) => {
-    const [modal, useModal] = useState(false);
+export const TodoScreen = ({ onRemove, goBack, todo, onSave }) => {
+    const [modal, setModal] = useState(false);
+    
+    const saveHandler = title => {
+        onSave(todo.id, title); 
+        setModal(false);
+    };
 
-    return (
+    return ( 
         <View>
             <EditModal 
+                value={todo.title}
                 visible={modal} 
-                onCancel={() => useModal(false)}
+                onCancel={() => setModal(false)}
+                onSave={saveHandler}
             />
 
             <AppCard style={styles.card} >
                 <Text style={styles.title} >{todo.title}</Text>
-                <Button title="Ред." onPress={() => useModal(true)} />
+                <Button title="Ред." onPress={() => setModal(true)} />
             </AppCard>
 
             <View style={styles.buttons}>
