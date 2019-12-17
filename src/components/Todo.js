@@ -10,7 +10,7 @@ export const Todo = ({ todo, onRemove, onOpen }) => {
         onLongPress={onRemove.bind(null, todo.id)}
         >
             <View style={styles.todo} >
-                <Text>
+                <Text style={styles.title}>
                     { todo.title }
                 </Text>
             </View>
@@ -28,5 +28,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: 10,
         backgroundColor: THEME.LIGHT_GRAY_COLOR,
+    },
+    title: {
+        fontFamily: 'roboto-bold',
     }
 });
