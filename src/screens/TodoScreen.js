@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     button: {
-        width: "40%"
+        width: Dimensions.get('window').width > 400 ? 150 : 100
     },
     title: {
         fontSize: 20
