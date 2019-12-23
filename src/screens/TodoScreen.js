@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Dimensions } from 'react-native';
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
 
 import { THEME } from '../theme';
