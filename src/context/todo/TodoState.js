@@ -11,7 +11,8 @@ import {
   SHOW_ERROR, 
   SHOW_LOADER, 
   HIDE_LOADER, 
-  CLEAR_ERROR 
+  CLEAR_ERROR, 
+  FEATCH_TODOS
 } from '../types';
 
 export const TodoState = ({ children }) => {
@@ -57,8 +58,20 @@ export const TodoState = ({ children }) => {
         {cancelable: false},
       );
     };
-    const updateTodo = (id, title) => dispatch({type: UPDATE_TODO, id, title});
+    const fetchTodos = async () => {
+      const response = await fetch(
+        'https://rn-todo-app-7346f.firebaseio.com/todos.json', 
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+      const data = await response.json();
+      const todos = Object.keys(data).map(key => ({ ...data[key], id: key }));
+      dispatch({ type: FEATCH_TODOS, todos });
+    };
 
+    const updateTodo = (id, title) => dispatch({type: UPDATE_TODO, id, title});
     const showLoader = () => dispatch({ type: SHOW_LOADER });
     const hideLoader = () => dispatch({ type: HIDE_LOADER });
     const showError = error => dispatch({ type: SHOW_ERROR, error });
@@ -68,10 +81,13 @@ export const TodoState = ({ children }) => {
         <TodoContext.Provider 
             value={{ 
                 todos: state.todos,
+                loading: state.loading,
+                error: state.error,
                 addTodo,
                 removeTodo,
-                updateTodo
-            }} >
+                updateTodo,
+                fetchTodos
+            }} > 
             { children }
         </TodoContext.Provider>
         );

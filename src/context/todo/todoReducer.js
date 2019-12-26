@@ -6,7 +6,7 @@ import {
     HIDE_LOADER, 
     CLEAR_ERROR, 
     SHOW_ERROR, 
-    FEATCH_TODO 
+    FEATCH_TODOS 
 } from "../types";
 
 const handlers  = {
@@ -31,7 +31,7 @@ const handlers  = {
     [HIDE_LOADER]: state => ({ ...state, loading: false }),
     [CLEAR_ERROR]: state => ({ ...state, error: null }),
     [SHOW_ERROR]: (state, { error }) => ({ ...state, error }),
-    [FEATCH_TODO]: (state, { todos }) => ({ ...state, todos }),
+    [FEATCH_TODOS]: (state, { todos }) => ({ ...state, todos }),
     DEFAULT: state => state
 };
 
