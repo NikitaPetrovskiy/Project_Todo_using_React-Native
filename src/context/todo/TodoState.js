@@ -1,9 +1,18 @@
 import React, { useReducer, useContext } from 'react';
 import { Alert } from 'react-native';
+
 import { TodoContext } from './todoContext';
 import { todoReducer } from './todoReducer';
-import { ADD_TODO, REMOVE_TODO, UPDATE_TODO, SHOW_ERROR, SHOW_LOADER, HIDE_LOADER, CLEAR_ERROR } from '../types';
 import { ScreenContext } from '../screen/screenContext';
+import { 
+  ADD_TODO, 
+  REMOVE_TODO, 
+  UPDATE_TODO, 
+  SHOW_ERROR, 
+  SHOW_LOADER, 
+  HIDE_LOADER, 
+  CLEAR_ERROR 
+} from '../types';
 
 export const TodoState = ({ children }) => {
     const initialState = {
@@ -14,28 +23,39 @@ export const TodoState = ({ children }) => {
     const { changeScreen } = useContext(ScreenContext);
     const [state, dispatch] = useReducer(todoReducer, initialState);
 
-    const addTodo = title => dispatch({type: ADD_TODO, title});
+    const addTodo = async title => {
+      const response = await fetch(
+        'https://rn-todo-app-7346f.firebaseio.com/todos.json', 
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json'},
+          body: JSON.stringify({ title })
+        } 
+      );
+      const data = await response.json();
+      dispatch({type: ADD_TODO, title, id: data.name });
+    };
     const removeTodo = id => {
-        const todo = state.todos.find(t => t.id === id);
-        Alert.alert( 
-          'Удаление элемента',
-          `Вы уверены что хотете удалить элемент "${todo.title}"?`,
-          [
-            {
-              text: 'Отмена',
-              style: 'cancel',
-            },
-            {
-              text: 'Удалить',
-              style: 'destructive',
-              onPress: () => {
-                changeScreen(null);
-                dispatch({type: REMOVE_TODO, id});
-              }
-            },
-          ],
-          {cancelable: false},
-        );
+      const todo = state.todos.find(t => t.id === id);
+      Alert.alert( 
+        'Удаление элемента',
+        `Вы уверены что хотете удалить элемент "${todo.title}"?`,
+        [
+          {
+            text: 'Отмена',
+            style: 'cancel',
+          },
+          {
+            text: 'Удалить',
+            style: 'destructive',
+            onPress: () => {
+              changeScreen(null);
+              dispatch({type: REMOVE_TODO, id});
+            }
+          },
+        ],
+        {cancelable: false},
+      );
     };
     const updateTodo = (id, title) => dispatch({type: UPDATE_TODO, id, title});
 
