@@ -6,6 +6,7 @@ import { Todo } from '../components/Todo';
 import { THEME } from '../theme';
 import { TodoContext } from '../context/todo/todoContext';
 import { ScreenContext } from '../context/screen/screenContext';
+import { AppLoader } from '../components/ui/AppLoader';
 
 export const MainScreen = () => {
     const {
@@ -21,7 +22,7 @@ export const MainScreen = () => {
         Dimensions.get('window').width - THEME.PADDING_HORIZONTAL * 2 );
 
     const loadTodos = useCallback( async () => await fetchTodos(), [fetchTodos]);
-        
+
     useEffect(() => {
         loadTodos();
     }, []);
@@ -38,6 +39,10 @@ export const MainScreen = () => {
             Dimensions.removeEventListener('change', update);
         };
     });
+
+    if(loading) {
+        return <AppLoader />
+    }
 
     let content = ( 
         <View style={{ width: deviceWidth }}>
