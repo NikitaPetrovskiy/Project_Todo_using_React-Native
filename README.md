@@ -22,5 +22,14 @@ expo start
 ```
 And open ``Expo Client`` on your device. Scan the QR code with Expo Client (``Android``) or Camera (``iOS``). <br>
 You may have to wait a minute while your project bundles and loads for the first time.
-### Author
+
+## Screenshots
+
+![Repo list](screenshots/rn-todo-app-1.png)
+![Repo list](screenshots/rn-todo-app-2.png)
+![Repo list](screenshots/rn-todo-app-3.png)
+![Repo list](screenshots/rn-todo-app-5.png)
+![Repo list](screenshots/rn-todo-app-4.png)
+
+## Author
  **[Nikita Petrovskiy](https://www.linkedin.com/in/nikpetrovskiy/)**
