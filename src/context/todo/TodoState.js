@@ -36,6 +36,7 @@ export const TodoState = ({ children }) => {
       const data = await response.json();
       dispatch({type: ADD_TODO, title, id: data.name });
     };
+
     const removeTodo = id => {
       const todo = state.todos.find(t => t.id === id);
       Alert.alert( 
@@ -58,19 +59,26 @@ export const TodoState = ({ children }) => {
         {cancelable: false},
       );
     };
+
     const fetchTodos = async () => {
       showLoader();
-      const response = await fetch(
-        'https://rn-todo-app-7346f.firebaseio.com/todos.json', 
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
-      const data = await response.json();
-      const todos = Object.keys(data).map(key => ({ ...data[key], id: key }));
-      dispatch({ type: FEATCH_TODOS, todos });
-      hideLoader();
+      clearError();
+      try {
+        const response = await fetch(
+          'https://rn-todo-app-7346f.firebaseio.com/todos.json', 
+          {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+        const data = await response.json();
+        const todos = Object.keys(data).map(key => ({ ...data[key], id: key }));
+        dispatch({ type: FEATCH_TODOS, todos });
+      } catch (e) {
+        showError('Что-то пошло не так... ');
+      } finally {
+        hideLoader();
+      }
     };
 
     const updateTodo = (id, title) => dispatch({type: UPDATE_TODO, id, title});
